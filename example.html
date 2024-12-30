@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="مؤشر التغير المناخي في الوقت الحقيقي عبر خريطة تفاعلية.">
+    <title>مؤشر التغير المناخي في الوقت الحقيقي</title>
+
+    <!-- تحميل مكتبة Leaflet.js محليًا -->
+    <link rel="stylesheet" href="leaflet.css"/>
+    <style>
+        /* تنسيق صفحة الويب */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #live-map {
+            height: 500px;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        .weather-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .weather-info span {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .footer {
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .loading {
+            font-size: 18px;
+            color: #333;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>مؤشر التغير المناخي في الوقت الحقيقي</h1>
+        <p>اكتشف التغيرات المناخية الحية في منطقتك من خلال الخريطة التفاعلية.</p>
+    </header>
+
+    <!-- خريطة تفاعلية -->
+    <div id="live-map"></div>
+
+    <!-- معلومات الطقس -->
+    <div class="weather-info">
+        <p class="loading" id="loading-message">جاري تحميل البيانات...</p>
+        <p>درجة الحرارة الحالية: <span id="temperature">غير متوفر</span>°C</p>
+        <p>مستوى التلوث: <span id="pollution-level">غير متوفر</span></p>
+        <p>الرطوبة: <span id="humidity">غير متوفر</span>%</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 جميع الحقوق محفوظة لموقع مؤشر التغير المناخي.</p>
+    </div>
+
+    <!-- تحميل مكتبة Leaflet.js محليًا -->
+    <script src="leaflet.js"></script>
+    <script>
+        const defaultLat = 32.0853; // خط العرض الافتراضي
+        const defaultLon = 34.7818; // خط الطول الافتراضي
+
+        // إعداد الخريطة باستخدام مكتبة Leaflet
+        const map = L.map('live-map').setView([defaultLat, defaultLon], 13); // ضبط الخريطة في الموقع الافتراضي
+
+        // إضافة طبقة الخريطة محليًا (يجب تنزيلها مسبقًا)
+        L.tileLayer('tiles/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(map);
+
+        // إضافة مؤشر في الموقع الافتراضي
+        L.marker([defaultLat, defaultLon]).addTo(map)
+            .bindPopup('الموقع الافتراضي')
+            .openPopup();
+
+        // عرض رسالة إذا لم يكن هناك اتصال
+        document.getElementById('loading-message').innerText = 'الخريطة تظهر باستخدام بيانات محلية.';
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إتمام الدفع</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        header {
+            background-color: #28a745;
+            color: white;
+            padding: 20px 0;
+            font-size: 2em;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .form-container:hover {
+            transform: translateY(-10px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #28a745;
+        }
+
+        .payment-method {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .payment-method input {
+            margin-right: 5px;
+        }
+
+        .button,
+        .back-button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:disabled {
+            background-color: #ccc;
+        }
+
+        .button:hover:enabled,
+        .back-button:hover {
+            background-color: #218838;
+        }
+
+        .recaptcha-container {
+            margin: 20px auto;
+            text-align: center;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .recaptcha-container label {
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .recaptcha-container input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>إتمام الدفع</h1>
+    </header>
+
+    <div class="form-container">
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="name">الاسم الكامل:</label>
+                <input type="text" id="name" name="name" placeholder="أدخل اسمك" required disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">رقم الهاتف:</label>
+                <input type="tel" id="phone" name="phone" placeholder="أدخل رقم هاتفك" required disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="address">العنوان:</label>
+                <input type="text" id="address" name="address" placeholder="أدخل عنوانك" required disabled>
+            </div>
+
+            <div class="form-group">
+                <label>طريقة الدفع:</label>
+                <div class="payment-method">
+                    <div>
+                        <input type="radio" id="creditCard" name="paymentMethod" value="creditCard" required disabled>
+                        <label for="creditCard">بطاقة ائتمان</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="paypal" name="paymentMethod" value="paypal" disabled>
+                        <label for="paypal">PayPal</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="vodafoneCash" name="paymentMethod" value="vodafoneCash" disabled>
+                        <label for="vodafoneCash">فودافون كاش</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recaptcha-container" id="recaptchaContainer">
+                <label>
+                    <input type="checkbox" id="notRobotCheckbox">
+                    أنا لست روبوت
+                </label>
+            </div>
+
+            <button type="submit" class="button" id="submitButton" disabled>إتمام الدفع</button>
+        </form>
+    </div>
+
+    <button class="back-button" onclick="window.location.href='99.html';">العودة إلى الصفحة الرئيسية</button>
+
+    <script>
+        const notRobotCheckbox = document.getElementById('notRobotCheckbox');
+        const submitButton = document.getElementById('submitButton');
+        const recaptchaContainer = document.getElementById('recaptchaContainer');
+        const formElements = document.querySelectorAll('input, select');
+
+        notRobotCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                formElements.forEach(element => {
+                    element.disabled = false;
+                });
+                submitButton.disabled = false;
+                recaptchaContainer.style.display = 'none';
+            } else {
+                formElements.forEach(element => {
+                    element.disabled = true;
+                });
+                submitButton.disabled = true;
+            }
+        });
+
+        document.getElementById('paymentForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            alert('تم تقديم النموذج بنجاح!');
+        });
+    </script>
+</body>
+
+</html>

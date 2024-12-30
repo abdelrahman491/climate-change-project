@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>محكمة المناخ</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* General body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            direction: rtl;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header styles */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 3em;
+            color: #008C74;
+            font-weight: bold;
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        /* Court room styles */
+        .court-room {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .judge {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .judge-avatar {
+            width: 120px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .judge h2 {
+            font-size: 2em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .judge p {
+            font-size: 1.2em;
+            color: #777;
+        }
+
+        /* Questions styling */
+        .questions {
+            margin-bottom: 40px;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            color: #444;
+        }
+
+        .question button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .question button:hover {
+            background-color: #45a049;
+        }
+
+        .question input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        /* Judgment display */
+        .judgment {
+            background-color: #e1f7e1;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            display: none;
+            margin-top: 30px;
+        }
+
+        .judgment p {
+            text-align: center;
+            color: #555;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 1em;
+            color: #777;
+        }
+
+        footer p {
+            margin-top: 10px;
+        }
+
+        /* Button styles */
+        button#submit {
+            background-color: #008C74;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        button#submit:hover {
+            background-color: #007856;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>محكمة المناخ </h1>
+            <p>هل ستنقذ كوكب الأرض أم ستساهم في تدميره؟ حان وقت المحاكمة!</p>
+        </header>
+
+        <!-- Court Room Section -->
+        <section class="court-room">
+            <div class="judge">
+                <img src="judge-avatar.webp" alt="قاضي المناخ" class="judge-avatar">
+                <h2>القاضي: كوكب الأرض في محاكمة</h2>
+                <p>مرحبًا بك في محكمة المناخ! اختر إجاباتك بعناية لأن مصير كوكب الأرض بين يديك!</p>
+            </div>
+
+            <!-- Questions Section -->
+            <div class="questions" id="questions"></div>
+
+            <!-- Judgment Section -->
+            <div class="judgment" id="judgment">
+                <p id="judgment-text">سيتم إصدار الحكم قريبًا بناءً على إجاباتك.</p>
+            </div>
+
+            <!-- Show result button -->
+            <button id="submit" onclick="submitAnswers()" style="display: none;">اعرض الحكم!</button>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 محكمة المناخ. جميع الحقوق محفوظة.</p>
+        </footer>
+    </div>
+
+    <script>
+        let answers = {};
+        let currentQuestion = 0;
+
+        // Array of questions (both multiple choice and text input)
+        const questions = [
+            {
+                type: "choice",
+                question: "هل لديك نظام توفير الطاقة في منزلك مثل لمبات LED أو الأجهزة ذات الكفاءة العالية؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تقوم بإيقاف الأجهزة الكهربائية عندما لا تكون بحاجة إليها (مثل التلفزيون، الكمبيوتر، إلخ)؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تستخدم المياه بطريقة مسؤولة في منزلك؟ على سبيل المثال، لا تترك الحنفية مفتوحة أثناء غسل اليدين أو تنظيف الصحون؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تقوم بشراء المنتجات التي تحمل شعارًا بيئيًا مثل المنتجات العضوية أو التي تم إنتاجها بتقنيات صديقة للبيئة؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تقوم بالتنقل باستخدام وسائل النقل العامة أو الدراجة بدلاً من قيادة السيارة الخاصة بك بشكل يومي؟",
+                options: ["نعم", "لا"]
+            },
+            
+            {
+                type: "choice",
+                question: "هل تستخدم حقيبة قماشية بدلاً من الأكياس البلاستيكية عند التسوق؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تستهلك اللحوم بكميات كبيرة، أم أنك تحاول تقليل استهلاكك للحوم لأسباب بيئية؟",
+                options: ["أستهلك كميات كبيرة", "أتناول كميات معتدلة", "أقلل من استهلاك اللحوم"]
+            },
+            {
+                type: "choice",
+                question: "هل تستخدم أي شكل من أشكال الطاقة المتجددة (مثل الألواح الشمسية) في منزلك أو عملك؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تشارك في حملات أو فعاليات تهدف إلى توعية المجتمع حول أهمية الحفاظ على البيئة؟",
+                options: ["نعم", "لا"]
+            },
+           
+            {
+                type: "choice",
+                question: "هل تستخدم منتجًا واحدًا على الأقل قابلًا لإعادة الاستخدام في حياتك اليومية مثل زجاجة ماء قابلة لإعادة الاستخدام أو أكواب قهوة قابلة لإعادة الاستخدام؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تعتمد على الزراعة المحلية أو المنتجات الموسمية بدلاً من المنتجات المستوردة التي قد تكون لها بصمة كربونية عالية؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تقوم بتقليص استخدام المواد البلاستيكية بشكل يومي؟",
+                options: ["نعم", "لا"]
+            },
+            {
+                type: "choice",
+                question: "هل تقوم بترشيد استهلاك الكهرباء في منزلك عبر استخدام أجهزة ذكية أو أجهزة موفرة للطاقة؟",
+                options: ["نعم", "لا"]
+            },
+         
+           
+        ];
+
+        // Function to show the next question
+        function showQuestion() {
+            if (currentQuestion < questions.length) {
+                const q = questions[currentQuestion];
+                const questionElement = document.createElement('div');
+                questionElement.classList.add('question');
+
+                if (q.type === "choice") {
+                    questionElement.innerHTML = `
+                        <p>${q.question}</p>
+                        <button onclick="answerQuestion('نعم')">${q.options[0]}</button>
+                        <button onclick="answerQuestion('لا')">${q.options[1]}</button>
+                    `;
+                } else if (q.type === "text") {
+                    questionElement.innerHTML = `
+                        <p>${q.question}</p>
+                        <input type="text" id="answer-text" />
+                        <button onclick="answerQuestion(document.getElementById('answer-text').value)">إجابة</button>
+                    `;
+                }
+
+                document.getElementById('questions').innerHTML = '';
+                document.getElementById('questions').appendChild(questionElement);
+            } else {
+                document.getElementById('submit').style.display = 'block';
+            }
+        }
+
+        // Function to save the answer and move to the next question
+        function answerQuestion(answer) {
+            if (answer.trim() === '') {
+                alert('من فضلك، أجب على السؤال قبل الانتقال.');
+                return;
+            }
+            answers[currentQuestion] = answer;
+            currentQuestion++;
+            showQuestion();
+        }
+
+        // Function to submit the answers and display the judgment
+        function submitAnswers() {
+            let yesCount = Object.values(answers).filter(answer => answer === 'نعم').length;
+            let judgmentText = '';
+
+            // Logic for determining judgment based on answers
+            if (yesCount >= 15) {
+                judgmentText = "تهانينا! أنت مواطن بيئي صالح. استمر في الحفاظ على البيئة!";
+            } else if (yesCount >= 10) {
+                judgmentText = "أنت تبذل مجهودًا جيدًا، لكن هناك مجالات يمكن تحسينها مثل تقليل استخدام البلاستيك والنقل الشخصي.";
+            } else {
+                judgmentText = "تم الحكم ضدك. يجب عليك اتخاذ خطوات بيئية إيجابية لتحسين سلوكك. حاول تقليل استهلاك البلاستيك، استخدام وسائل النقل العامة، وزيادة الوعي البيئي!";
+            }
+
+            document.getElementById('judgment-text').innerText = judgmentText;
+            document.getElementById('judgment').style.display = 'block';
+        }
+
+        // Initializing the first question
+        showQuestion();
+    </script>
+</body>
+</html>
